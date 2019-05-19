@@ -1,42 +1,44 @@
 var socket
+var usuario_id
 function setup() {
-  let teste = createVector(100, 50)
-  console.log(teste)
+  frameRate(40)
+  createCanvas(500, 500)
+  background(128)
   socket = io('http://localhost:8080', {reconnect: true});
   socket.on('connect', function (socket) {
+    usuario_id = random(50)
     console.log('Conectado!')
   })
-  socket.emit('testando', {text: 'meuTexto'})
+  socket.on('testando-front', (data) => {
+    var color;
+    if(data.user != usuario_id) {
+      color = 0
+    } else {
+      color = 255
+    }
+    fill(color)
+    noStroke()
+    ellipse(data.coords.x, data.coords.y, 40)
+  })
 }
 
+var pressionado = false
+function mousePressed() {
+  pressionado = true
+}
+function mouseReleased() {
+  pressionado = false
+}
 
-
-var mouseStillDown = false;
-var interval;
-var contador = 0
-
-$('#botao').mousedown(function(event) {
-    mouseStillDown = true;
-    doSomething();
-});
-
-function doSomething() {
-  if (!mouseStillDown) { return; }                                      
-
-  if (mouseStillDown) {
-    interval = setInterval(() => {
-      socket.emit('testando', {text: contador})
-      contador += 1
-      console.log('lul', contador)
-
-    }, 100);
+function draw() {
+  if(pressionado) {
+    socket.emit('testando-back', {
+      user: usuario_id,
+      coords : {
+        x: mouseX,
+        y: mouseY
+    }})
   }
+
 }
-
-$('#botao').mouseup(function(event) {
-    mouseStillDown = false;
-    clearInterval(interval)
-});
-
-function draw() {}
 
