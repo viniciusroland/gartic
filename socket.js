@@ -7,8 +7,8 @@ let port = 8080
 //socket development
 io.on('connection', (socket) => {
   console.log('conectou')
-  socket.on('testando-back', (data) => {
-    io.emit('testando-front', data)
+  socket.on('processingDataBackend', (data) => {
+    io.emit('sendingDataFrontend', data)
   })
 })
 

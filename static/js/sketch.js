@@ -9,7 +9,7 @@ function setup() {
     usuario_id = random(50)
     console.log('Conectado!')
   })
-  socket.on('testando-front', (data) => {
+  socket.on('sendingDataFrontend', (data) => {
     var color;
     if(data.user != usuario_id) {
       color = 0
@@ -21,7 +21,6 @@ function setup() {
     ellipse(data.coords.x, data.coords.y, 40)
   })
 }
-
 var pressionado = false
 function mousePressed() {
   pressionado = true
@@ -32,13 +31,12 @@ function mouseReleased() {
 
 function draw() {
   if(pressionado) {
-    socket.emit('testando-back', {
+    socket.emit('processingDataBackend', {
       user: usuario_id,
       coords : {
         x: mouseX,
         y: mouseY
     }})
   }
-
 }
 
