@@ -40,7 +40,7 @@ eraser.addEventListener('click', (e) => {
 
 function setup() {
   frameRate(40)
-  createCanvas(500, 500)
+  createCanvas(500, 508)
   background(128)
   socket = io('http://localhost:8080', {reconnect: true});
   socket.on('connect', function (socket) {

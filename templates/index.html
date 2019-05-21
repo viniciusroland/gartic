@@ -39,17 +39,51 @@ li {
 #chat-content {
 }
 
+.speech-bubble-left { position: relative; background: #00C6FF; border-radius: .4em; } .speech-bubble-left:after { content: ''; position: absolute; left: 0; top: 50%; width: 0; height: 0; border: 20px solid transparent; border-right-color: #00C6FF; border-left: 0; border-bottom: 0; margin-top: -10px; margin-left: -20px; }
+
+.speech-bubble-right { position: relative; background: #0078FF; border-radius: .4em; } .speech-bubble-right:after { content: ''; position: absolute; right: 0; top: 50%; width: 0; height: 0; border: 20px solid transparent; border-left-color: #0078FF; border-right: 0; border-bottom: 0; margin-top: -10px; margin-right: -20px; margin-left: 100px}
+#desc {
+  word-break: break-all;
+  padding: 10px;
+}
   </style>
   </head>
   
   <body>
-    <div id="chat-content" style="display:flex; flex-direction:column;justify-content: space-between">
+    <div id="chat-content" style="">
       <div id="header" style="text-align: center">
         <h2>ROLARTIC</h2>
         <i class="fas fa-paint-brush" style="font-size: 30px"></i>
 
       </div>
-      <textarea id="chat" name="chat" cols="30" rows="25"></textarea>
+      <div id="inputs" style="display: flex; flex-direction: column">
+        <div id="bodydesc" style="margin-top: 10px;margin-left:auto; margin-right:auto; width: 246px; height: 355px; overflow-y: scroll; background-color: #eee; overflow-x: hidden;">
+
+          <hgroup class="speech-bubble-left" style="width: 136; margin-left: 19px">
+            <p id="desc" style="">auehauheuaehauheauheauehauheauheauheauhuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuazideia</p>
+          </hgroup>
+            <hgroup class="speech-bubble-right" style="width: 136; margin-left: 83px">
+            <p id="desc" style="">azideia</p>
+          </hgroup>
+          <hgroup class="speech-bubble-right" style="width: 136; margin-left: 83px">
+            <p id="desc" style="">azideia</p>
+          </hgroup>
+          <hgroup class="speech-bubble-right" style="width: 136; margin-left: 83px">
+            <p id="desc" style="">azideia</p>
+          </hgroup>
+          <hgroup class="speech-bubble-right" style="width: 136; margin-left: 83px">
+            <p id="desc" style="">azideia</p>
+          </hgroup>
+          <hgroup class="speech-bubble-right" style="width: 136; margin-left: 83px">
+            <p id="desc" style="">azideia</p>
+          </hgroup>
+        </div>
+        <!--<div width="246px" height="314px" style="background-color: red; overflow-y: scroll">
+          <p>Lorem</p>
+        </div>-->
+        <input type="text" placeholder="Digite aqui...">
+        <button width="30px">Enviar</button>
+      </div>
     </div>
     <div id="colors_pallete">
       <ul id="pallete_ul" height="100%">
