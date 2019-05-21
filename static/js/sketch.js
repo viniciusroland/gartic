@@ -5,8 +5,22 @@ var type = undefined
 var sizeof = 15
 var font
 var fontsize = 20
+var tema
+var tema_original
+var key_words = [
+  'corno',
+  'polijunior',
+  'mariana',
+  'programacao',
+  'cinema',
+  'harry potter',
+  'poli',
+  'abacate',
+  'irmao do jorel'
+]
 
 //taking color
+
 
 let paletas = document.getElementsByClassName('fa-palette')
 for(let paleta of paletas) {
@@ -43,12 +57,15 @@ eraser.addEventListener('click', (e) => {
 let input = document.getElementById('input_msg')
 let button = document.getElementById('send')
 
-let text_;
+//let text_;
 button.addEventListener('click', (e) => {
   sendMessageToServer()
 })
 function sendMessageToServer() {
     let text_ = input.value
+    if(text_ == tema_original) {
+      alert('voce adivinhou, parabens')
+    }
     input.value = ''
     console.log(text_)
     socket.emit('processingMessageBackend', {
@@ -104,8 +121,10 @@ function setup() {
   socket = io('http://localhost:8080', {reconnect: true});
   socket.on('connect', function (socket) {
     usuario_id = random(50)
+    this.emit('userConnection', {user : usuario_id})
     console.log('Conectado!')
   })
+
   socket.on('sendingDataFrontend', (data) => {
     if(data.type == 'eraser') {
       fill('#6497b1')
@@ -117,6 +136,19 @@ function setup() {
   })
   socket.on('sendingMessageFrontend', (msg) => {
     addMessage(msg)
+  })
+
+  socket.on('selectingTheme', (theme) => {
+    tema_original = theme.theme
+    tema = ''
+    let word;
+    if(theme.user != usuario_id) {
+      word = 'dica : ' + hideWord(theme.theme)
+      console.log(word)
+    } else {
+      word = 'tema : ' + theme.theme
+    }
+    tema = word
   })
 }
 
@@ -136,11 +168,38 @@ function drawWords(x, word) {
   //text('palavra : abacate', x, 20);
 }
 
+
+function hideWord(word) {
+  let new_word = ''
+  console.log(word)
+  for(let i = 0; i < word.length; i++) {
+    let random_number = Math.random()
+
+    if(word[i] != ' ') {
+      if(random_number > 0.5) {
+        new_word += word[i] + ' '
+      } else {
+        new_word += '_ '
+      }
+    } else {
+      new_word += ' '
+    }
+
+  }
+  return new_word
+}
+
 function draw() {
-  let tip = 'a _ a _ _ t _e'
-  //let word = 'abacate'
-  textAlign(CENTER);
-  drawWords(250, 'dica : ' + tip)
+  if(tema != undefined) {
+    if(tema.indexOf('_') > -1) {
+      textAlign(CENTER);
+      drawWords(250, tema)
+    }  else {
+      textAlign(CENTER);
+      drawWords(250, tema)
+    }
+
+  }
 
   if(pressionado) {
     socket.emit('processingDataBackend', {
