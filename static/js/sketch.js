@@ -1,5 +1,43 @@
 var socket
 var usuario_id
+var colored = 'black'
+var type = undefined
+var sizeof = 15
+
+//taking color
+
+let paletas = document.getElementsByClassName('fa-palette')
+for(let paleta of paletas) {
+  console.log(paleta)
+  paleta.addEventListener('click', (e) => {
+    colored = e.target.parentNode.style.color
+    let aviso = 'cor selecionada : ' + colored
+    console.log(aviso)
+  })
+}
+
+let brush = document.getElementById('brush')
+brush.addEventListener('click', (e) => {
+  type = 'brush'
+  sizeof = 40
+  let aviso = 'tipo selecionado : ' + type
+  console.log(aviso)
+})
+let pencil = document.getElementById('pencil')
+pencil.addEventListener('click', (e) => {
+  type = 'pencil'
+  sizeof = 15
+  let aviso = 'tipo selecionado : ' + type
+  console.log(aviso)
+})
+let eraser = document.getElementById('eraser')
+eraser.addEventListener('click', (e) => {
+  type = 'eraser'
+  sizeof = 50
+  let aviso = 'tipo selecionado : ' + type
+  console.log(aviso)
+})
+
 function setup() {
   frameRate(40)
   createCanvas(500, 500)
@@ -10,15 +48,14 @@ function setup() {
     console.log('Conectado!')
   })
   socket.on('sendingDataFrontend', (data) => {
-    var color;
-    if(data.user != usuario_id) {
-      color = 0
+    if(data.type == 'eraser') {
+      fill(128)
     } else {
-      color = 255
+      fill(data.color)
     }
-    fill(color)
     noStroke()
-    ellipse(data.coords.x, data.coords.y, 40)
+    console.log(data.size)
+    ellipse(data.coords.x, data.coords.y, data.size)
   })
 }
 var pressionado = false
@@ -36,7 +73,11 @@ function draw() {
       coords : {
         x: mouseX,
         y: mouseY
-    }})
+      },
+      color: colored,
+      type: type,
+      size: sizeof
+    })
   }
 }
 

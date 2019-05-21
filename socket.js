@@ -8,6 +8,7 @@ let port = 8080
 io.on('connection', (socket) => {
   console.log('conectou')
   socket.on('processingDataBackend', (data) => {
+    console.log('data recebida', data)
     io.emit('sendingDataFrontend', data)
   })
 })
