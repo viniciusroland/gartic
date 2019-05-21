@@ -11,6 +11,10 @@ io.on('connection', (socket) => {
     console.log('data recebida', data)
     io.emit('sendingDataFrontend', data)
   })
+  socket.on('processingMessageBackend', (msg) => {
+    console.log('recebi a mensagem: ', msg.text)
+    io.emit('sendingMessageFrontend', msg)
+  })
 })
 
 //server running

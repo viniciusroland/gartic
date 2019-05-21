@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="http://localhost:8000/static/css/style.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="http://localhost:8000/static/p5/p5.min.js"></script>
   <script src="http://localhost:8000/static/js/ws.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
@@ -15,7 +16,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background-color: #C0C0C0;
+  background-color: #b3cde0;
+  border-radius: 8px;
+}
+canvas {
+  border-radius: 10px;
 }
 /*html {
   text-align: center;
@@ -39,10 +44,10 @@ li {
 #chat-content {
 }
 
-.speech-bubble-left { position: relative; background: #00C6FF; border-radius: .4em; } .speech-bubble-left:after { content: ''; position: absolute; left: 0; top: 50%; width: 0; height: 0; border: 20px solid transparent; border-right-color: #00C6FF; border-left: 0; border-bottom: 0; margin-top: -10px; margin-left: -20px; }
+.speech-bubble-left { position: relative; background: #00C6FF; border-radius: .4em; margin-top: 10px } .speech-bubble-left:after { content: ''; position: absolute; left: 0; top: 50%; width: 0; height: 0; border: 20px solid transparent; border-right-color: #00C6FF; border-left: 0; border-bottom: 0; margin-top: -10px; margin-left: -20px; }
 
 .speech-bubble-right { position: relative; background: #0078FF; border-radius: .4em; } .speech-bubble-right:after { content: ''; position: absolute; right: 0; top: 50%; width: 0; height: 0; border: 20px solid transparent; border-left-color: #0078FF; border-right: 0; border-bottom: 0; margin-top: -10px; margin-right: -20px; margin-left: 100px}
-#desc {
+#msg {
   word-break: break-all;
   padding: 10px;
 }
@@ -51,38 +56,27 @@ li {
   
   <body>
     <div id="chat-content" style="">
-      <div id="header" style="text-align: center">
+      <div id="header" style="text-align: center; margin-bottom: 10px">
         <h2>ROLARTIC</h2>
         <i class="fas fa-paint-brush" style="font-size: 30px"></i>
 
       </div>
       <div id="inputs" style="display: flex; flex-direction: column">
-        <div id="bodydesc" style="margin-top: 10px;margin-left:auto; margin-right:auto; width: 246px; height: 355px; overflow-y: scroll; background-color: #eee; overflow-x: hidden;">
+        <div id="bodydesc" style="margin-top: 0px;margin-left:auto; margin-right:auto; width: 246px; height: 355px; overflow-y: scroll; background-color: #eee; overflow-x: hidden;">
 
           <hgroup class="speech-bubble-left" style="width: 136; margin-left: 19px">
-            <p id="desc" style="">auehauheuaehauheauheauehauheauheauheauhuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuazideia</p>
+            <p id="msg" style="">Bem-vindo ao Rolartic!</p>
           </hgroup>
             <hgroup class="speech-bubble-right" style="width: 136; margin-left: 83px">
-            <p id="desc" style="">azideia</p>
-          </hgroup>
-          <hgroup class="speech-bubble-right" style="width: 136; margin-left: 83px">
-            <p id="desc" style="">azideia</p>
-          </hgroup>
-          <hgroup class="speech-bubble-right" style="width: 136; margin-left: 83px">
-            <p id="desc" style="">azideia</p>
-          </hgroup>
-          <hgroup class="speech-bubble-right" style="width: 136; margin-left: 83px">
-            <p id="desc" style="">azideia</p>
-          </hgroup>
-          <hgroup class="speech-bubble-right" style="width: 136; margin-left: 83px">
-            <p id="desc" style="">azideia</p>
+            <p id="msg" style="">Esse é o chat!</p>
           </hgroup>
         </div>
         <!--<div width="246px" height="314px" style="background-color: red; overflow-y: scroll">
           <p>Lorem</p>
         </div>-->
-        <input type="text" placeholder="Digite aqui...">
-        <button width="30px">Enviar</button>
+        <!--<input id="input_msg" type="text" placeholder="Digite aqui...">-->
+        <input type="text" class="form-control form-control-sm" id="input_msg" placeholder="Digite aqui...">
+        <button class="btn btn-primary" id="send">Enviar</button>
       </div>
     </div>
     <div id="colors_pallete">

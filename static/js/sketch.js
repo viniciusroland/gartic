@@ -3,6 +3,8 @@ var usuario_id
 var colored = 'black'
 var type = undefined
 var sizeof = 15
+var font
+var fontsize = 20
 
 //taking color
 
@@ -38,10 +40,67 @@ eraser.addEventListener('click', (e) => {
   console.log(aviso)
 })
 
+let input = document.getElementById('input_msg')
+let button = document.getElementById('send')
+
+let text_;
+button.addEventListener('click', (e) => {
+  sendMessageToServer()
+})
+function sendMessageToServer() {
+    let text_ = input.value
+    input.value = ''
+    console.log(text_)
+    socket.emit('processingMessageBackend', {
+      text: text_,
+      user: usuario_id
+    })
+
+}
+
+function addMessage(msg) {
+  let ballon = document.createElement('hgroup')
+  let p = document.createElement('p')
+  let father_div = document.getElementById('bodydesc')
+
+  p.id = 'msg'
+  p.textContent = msg.text
+
+  ballon.appendChild(p)
+  father_div.appendChild(ballon)
+
+  if(msg.user != usuario_id) {
+    ballon.className = 'speech-bubble-left'
+    ballon.style = 'width: 136; margin-left: 19px'
+  } else {
+    ballon.className = 'speech-bubble-right'
+    ballon.style = 'width: 136; margin-left: 83px'
+  }
+
+  father_div.scrollTop = father_div.scrollHeight;
+
+  
+
+}
+
+function preload() {
+  font = loadFont('static/fonts/Montserrat-Regular.otf');
+
+}
+function keyPressed() {
+  if(keyCode == 13) {
+    sendMessageToServer()
+  }
+}
+
 function setup() {
+  textFont(font);
+  textSize(fontsize);
+  textAlign(CENTER, CENTER);
+
   frameRate(40)
-  createCanvas(500, 508)
-  background(128)
+  createCanvas(500, 510)
+  background('#6497b1')
   socket = io('http://localhost:8080', {reconnect: true});
   socket.on('connect', function (socket) {
     usuario_id = random(50)
@@ -49,15 +108,18 @@ function setup() {
   })
   socket.on('sendingDataFrontend', (data) => {
     if(data.type == 'eraser') {
-      fill(128)
+      fill('#6497b1')
     } else {
       fill(data.color)
     }
     noStroke()
-    console.log(data.size)
     ellipse(data.coords.x, data.coords.y, data.size)
   })
+  socket.on('sendingMessageFrontend', (msg) => {
+    addMessage(msg)
+  })
 }
+
 var pressionado = false
 function mousePressed() {
   pressionado = true
@@ -65,8 +127,21 @@ function mousePressed() {
 function mouseReleased() {
   pressionado = false
 }
+function drawWords(x, word) {
+  // The text() function needs three parameters:
+  // the text to draw, the horizontal position,
+  // and the vertical position
+  fill(0, 0, 120);
+  text(word, x, 20);
+  //text('palavra : abacate', x, 20);
+}
 
 function draw() {
+  let tip = 'a _ a _ _ t _e'
+  //let word = 'abacate'
+  textAlign(CENTER);
+  drawWords(250, 'dica : ' + tip)
+
   if(pressionado) {
     socket.emit('processingDataBackend', {
       user: usuario_id,
