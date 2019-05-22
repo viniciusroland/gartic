@@ -54,17 +54,17 @@ eraser.addEventListener('click', (e) => {
   console.log(aviso)
 })
 
-let input = document.getElementById('input_msg')
 let button = document.getElementById('send')
-
-//let text_;
 button.addEventListener('click', (e) => {
   sendMessageToServer()
 })
+
+let input = document.getElementById('input_msg')
 function sendMessageToServer() {
     let text_ = input.value
     if(text_ == tema_original) {
-      alert('voce adivinhou, parabens')
+      alert('Voce acertou, parabens!')
+      socket.emit('finishRound',  {reload: true})
     }
     input.value = ''
     console.log(text_)
@@ -150,6 +150,12 @@ function setup() {
     }
     tema = word
   })
+
+  socket.on('reloadPage', (data) => {
+    if(data.reload == true) {
+      location.reload()
+    }
+  })
 }
 
 var pressionado = false
@@ -160,12 +166,8 @@ function mouseReleased() {
   pressionado = false
 }
 function drawWords(x, word) {
-  // The text() function needs three parameters:
-  // the text to draw, the horizontal position,
-  // and the vertical position
   fill(0, 0, 120);
   text(word, x, 20);
-  //text('palavra : abacate', x, 20);
 }
 
 
@@ -191,27 +193,21 @@ function hideWord(word) {
 
 function draw() {
   if(tema != undefined) {
-    if(tema.indexOf('_') > -1) {
-      textAlign(CENTER);
-      drawWords(250, tema)
-    }  else {
-      textAlign(CENTER);
-      drawWords(250, tema)
+    textAlign(CENTER);
+    drawWords(250, tema)
+    if(pressionado && tema.indexOf('tema') > -1) {
+      socket.emit('processingDataBackend', {
+        user: usuario_id,
+        coords : {
+          x: mouseX,
+          y: mouseY
+        },
+        color: colored,
+        type: type,
+        size: sizeof
+      })
     }
-
   }
 
-  if(pressionado) {
-    socket.emit('processingDataBackend', {
-      user: usuario_id,
-      coords : {
-        x: mouseX,
-        y: mouseY
-      },
-      color: colored,
-      type: type,
-      size: sizeof
-    })
-  }
 }
 

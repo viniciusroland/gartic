@@ -49,6 +49,10 @@ io.on('connection', (socket) => {
     }
   })
 
+  socket.on('finishRound', (data) => {
+    io.emit('reloadPage', data)
+  })
+
   socket.on('processingDataBackend', (data) => {
     console.log('data recebida', data)
     io.emit('sendingDataFrontend', data)
