@@ -12,7 +12,14 @@ let possible_themes = [
   'harry potter',
   'poli',
   'abacate',
-  'irmao do jorel'
+  'irmao do jorel',
+  'game of thrones',
+  'thanos',
+  'homem de ferro',
+  'audiovisual',
+  'eca',
+  'camera',
+  'bolsonaro'
 ]
 let users = []
 
