@@ -37,6 +37,7 @@ function selectUser(list_users) {
 
 }
 
+
 //socket development
 io.on('connection', (socket) => {
   console.log('conectou')
