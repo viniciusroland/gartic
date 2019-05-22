@@ -4,7 +4,7 @@ const port = 8000
 
 app.use('/static', express.static('static'))
 
-app.get('/', (req, res) => {
+app.get('/:room', (req, res) => {
   res.sendFile(__dirname + '/templates/index.html')
 })
 

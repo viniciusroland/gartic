@@ -1,6 +1,11 @@
 const express = require('express')
 const http = require('http').Server(express)
 const io = require('socket.io')(http, { origins: '*:*' })
+const url = require('url')
+//var adr = 'http://localhost:8000/room';
+//var q = url.parse(adr, true);
+//
+//console.log(q.pathname); //returns '/default.htm'
 
 let port = 8080
 let possible_themes = [
@@ -36,48 +41,51 @@ function selectUser(list_users) {
   return user
 
 }
+var room;
 
 
 //socket development
 io.on('connection', (socket) => {
-  console.log('conectou')
+  console.log('> Socket.io conectado!')
 
   socket.on('userConnection', (data) => {
     users.push(data.user)
+    room = data.room
+    socket.join(room)
     if(users.length > 1) {
       let theme = selectTheme(possible_themes)
       let user = selectUser(users)
-      io.emit('selectingTheme', {
+      //io.emit('selectingTheme', {
+      io.to(room).emit('selectingTheme', {
         theme : theme,
         user : user
       })
-      console.log(possible_themes, users)
-      console.log(theme, user)
       users = []
     }
   })
 
   socket.on('finishRound', (data) => {
-    io.emit('reloadPage', data)
+    //io.emit('reloadPage', data)
+    io.to(room).emit('reloadPage', data)
   })
 
   socket.on('processingDataBackend', (data) => {
-    console.log('data recebida', data)
-    io.emit('sendingDataFrontend', data)
+    //io.emit('sendingDataFrontend', data)
+    io.to(room).emit('sendingDataFrontend', data)
   })
   socket.on('processingMessageBackend', (msg) => {
-    console.log('recebi a mensagem: ', msg.text)
-    io.emit('sendingMessageFrontend', msg)
+    //io.emit('sendingMessageFrontend', msg)
+    io.to(room).emit('sendingMessageFrontend', msg)
   })
 
   socket.on('processingThemeBackend', (theme) => {
-    console.log('recebi o tema: ', theme.theme)
-    io.emit('sendingThemeFrontend', theme)
+    //io.emit('sendingThemeFrontend', theme)
+    io.to(room).emit('sendingThemeFrontend', theme)
   })
 })
 
 //server running
 http.listen(port, () => {
-  console.log('websockets rodando na porta:', port)
+  console.log('> Socket.io rodando na porta: ', port)
 })
 
