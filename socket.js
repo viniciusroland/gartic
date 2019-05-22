@@ -60,6 +60,8 @@ io.on('connection', (socket) => {
         theme : theme,
         user : user
       })
+      
+      io.to(room).emit('showJoinedUsers', {users: users})
       users = []
     }
   })

@@ -114,8 +114,13 @@ function setup() {
   background('#6497b1')
   socket = io('http://localhost:8080', {reconnect: true});
   socket.on('connect', (my_socket) => {
-    usuario_id = random(50)
-    let room = window.location.pathname
+    //get user from url
+    //usuario_id = random(50)
+    
+    let my_path = window.location.pathname
+    let my_url = my_path.split('_')
+    let room = my_url[0]
+    usuario_id = my_url[1]
     socket.emit('userConnection', {user : usuario_id, room: room})
     console.log('Conectado!')
   })
@@ -129,8 +134,16 @@ function setup() {
     noStroke()
     ellipse(data.coords.x, data.coords.y, data.size)
   })
+
   socket.on('sendingMessageFrontend', (msg) => {
     addMessage(msg)
+  })
+
+  socket.on('showJoinedUsers', (users) => {
+    
+    for(let user of users.users) {
+      addMessage({text: user + ' entrou no chat!', user: user})
+    }
   })
 
   socket.on('selectingTheme', (theme) => {
